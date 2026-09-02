@@ -6,3 +6,4 @@ riderModule.iml
 .idea/
 TransactionReader/TestFiles
 *.sln.DotSettings.user
+.DS_Store
