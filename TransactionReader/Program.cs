@@ -1,8 +1,3 @@
-﻿using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using TransactionReader.Models;
-
 if (args.Length == 0)
 {
     Console.WriteLine("Error: Please provide a CSV file path as an argument.");
@@ -17,17 +12,7 @@ if (!File.Exists(csvFilePath))
     return 1;
 }
 
-var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-{
-    TrimOptions = TrimOptions.Trim,
-    WhiteSpaceChars = [' ', '\t'],
-};
-
-using var reader = new StreamReader(csvFilePath);
-using var csv = new CsvReader(reader, config);
-
-csv.Context.RegisterClassMap<TransactionMap>();
-var transactions = csv.GetRecords<Transaction>().ToList();
+var transactions = TransactionReader.CsvHelper.ReadFile(csvFilePath);
     
 Console.WriteLine($"Successfully read {transactions.Count} transactions.");
     
