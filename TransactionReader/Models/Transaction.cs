@@ -17,7 +17,7 @@ public class Transaction
     public required string Currency { get; set; }
 
     [Required]
-    [Range(0.01, double.MaxValue)]
+    // [Range(0.01, double.MaxValue)]
     public required decimal Amount { get; set; }
 
     public string? Description { get; set; }
@@ -30,5 +30,5 @@ public class Transaction
 
     public string? Area { get; set; }
 
-    public CreditOrDebit? Credit { get; set; }
+    public CreditOrDebit? Side { get; set; }
 }
