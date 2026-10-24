@@ -6,6 +6,8 @@ namespace TransactionReader.Models;
 
 public class Transaction
 {
+    public int Id { get; set; }
+
     [Required]
     public required DateOnly TransactionDate { get; set; }
 
