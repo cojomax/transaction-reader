@@ -1,6 +1,7 @@
 #nullable enable
 
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace TransactionReader.Models;
 
@@ -19,7 +20,7 @@ public class Transaction
     public required string Currency { get; set; }
 
     [Required]
-    // [Range(0.01, double.MaxValue)]
+    [Precision(19, 4)]
     public required decimal Amount { get; set; }
 
     public string? Description { get; set; }

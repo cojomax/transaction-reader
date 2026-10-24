@@ -9,6 +9,7 @@ public class TransactionDbContextFactory : IDesignTimeDbContextFactory<Transacti
     {
         var options = new DbContextOptionsBuilder<TransactionDbContext>()
             .UseNpgsql(DbSettings.ConnectionString)
+            .UseSnakeCaseNamingConvention()
             .Options;
 
         return new TransactionDbContext(options);
