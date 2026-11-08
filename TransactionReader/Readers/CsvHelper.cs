@@ -3,7 +3,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using TransactionReader.Models;
 
-namespace TransactionReader;
+namespace TransactionReader.Readers;
 
 public static class CsvHelper
 {

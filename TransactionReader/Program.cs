@@ -14,7 +14,7 @@ if (!File.Exists(csvFilePath))
     return 1;
 }
 
-var transactions = TransactionReader.CsvHelper.ReadFile(csvFilePath);
+var transactions = TransactionReader.Readers.CsvHelper.ReadFile(csvFilePath);
     
 // Console.WriteLine($"Successfully read {transactions.Count} transactions.");
     
