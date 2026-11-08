@@ -1,20 +1,32 @@
 using TransactionReader.Data;
+using TransactionReader.Readers;
 
 if (args.Length == 0)
 {
-    Console.WriteLine("Error: Please provide a CSV file path as an argument.");
+    Console.WriteLine("Error: Please provide a CSV or PDF statement file path as an argument.");
     return 1;
 }
 
-var csvFilePath = args[0];
+var filePath = args[0];
 
-if (!File.Exists(csvFilePath))
+if (!File.Exists(filePath))
 {
-    Console.WriteLine($"Error: File '{csvFilePath}' not found.");
+    Console.WriteLine($"Error: File '{filePath}' not found.");
     return 1;
 }
 
-var transactions = TransactionReader.Readers.CsvHelper.ReadFile(csvFilePath);
+var transactions = Path.GetExtension(filePath).ToLowerInvariant() switch
+{
+    ".csv" => TransactionReader.Readers.CsvHelper.ReadFile(filePath),
+    ".pdf" => HsbcStatementReader.ReadFile(filePath),
+    _ => null,
+};
+
+if (transactions is null)
+{
+    Console.WriteLine($"Error: Unsupported file type '{Path.GetExtension(filePath)}'. Expected .csv or .pdf.");
+    return 1;
+}
     
 // Console.WriteLine($"Successfully read {transactions.Count} transactions.");
     
