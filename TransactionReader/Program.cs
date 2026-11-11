@@ -27,17 +27,17 @@ if (transactions is null)
     return 1;
 }
     
-// Console.WriteLine($"Successfully read {transactions.Count} transactions.");
+Console.WriteLine($"Successfully read {transactions.Count} transactions.");
     
-// foreach (var transaction in transactions)
-// {
-//     Console.WriteLine($"{transaction.TransactionDate} | {transaction.Merchant} | {transaction.Amount} {transaction.Currency} | {transaction.Side}");
-// }
+foreach (var transaction in transactions)
+{
+    Console.WriteLine($"{transaction.TransactionDate} | {transaction.Merchant} | {transaction.Amount} {transaction.Currency} | {transaction.Side}");
+}
 
-using var db = new TransactionDbContextFactory().CreateDbContext([]);
-db.Transactions.AddRange(transactions);
-var saved = db.SaveChanges();
-
-Console.WriteLine($"Saved {saved} transactions to the database.");
+// using var db = new TransactionDbContextFactory().CreateDbContext([]);
+// db.Transactions.AddRange(transactions);
+// var saved = db.SaveChanges();
+//
+// Console.WriteLine($"Saved {saved} transactions to the database.");
 
 return 0;
