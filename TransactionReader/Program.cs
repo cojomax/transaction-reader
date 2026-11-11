@@ -1,4 +1,6 @@
-using TransactionReader.Data;
+using TransactionReader;
+
+using var host = AppHost.CreateBuilder(args).Build();
 
 if (args.Length == 0)
 {
@@ -34,7 +36,8 @@ foreach (var transaction in transactions)
     Console.WriteLine($"{transaction.TransactionDate} | {transaction.Merchant} | {transaction.Amount} {transaction.Currency} | {transaction.Side}");
 }
 
-// using var db = new TransactionDbContextFactory().CreateDbContext([]);
+// using var scope = host.Services.CreateScope();
+// var db = scope.ServiceProvider.GetRequiredService<TransactionDbContext>();
 // db.Transactions.AddRange(transactions);
 // var saved = db.SaveChanges();
 //

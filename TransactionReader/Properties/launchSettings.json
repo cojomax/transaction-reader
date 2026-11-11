@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TransactionReader": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

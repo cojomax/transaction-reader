@@ -5,6 +5,7 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <UserSecretsId>4c17b603-28e8-412c-94a8-74d6ebd334d5</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +15,7 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.13" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.13" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
       <PackageReference Include="PdfPig" Version="0.1.16" />
     </ItemGroup>
