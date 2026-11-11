@@ -29,8 +29,10 @@ public static partial class HsbcStatementReader
 
     private sealed record Line(IReadOnlyList<Word> Words)
     {
-        public string Text(double fromX, double toX) => string.Join(' ',
-            Words.Where(w => w.BoundingBox.Left >= fromX && w.BoundingBox.Left < toX).Select(w => w.Text));
+        public string Text(double fromX, double toX) 
+            => string.Join(' ', Words
+                .Where(w => w.BoundingBox.Left >= fromX && w.BoundingBox.Left < toX)
+                .Select(w => w.Text));
     }
 
     public static List<Transaction> ReadFile(string filename)
@@ -38,7 +40,7 @@ public static partial class HsbcStatementReader
         using var document = PdfDocument.Open(filename);
 
         var statementDate = ReadStatementDate(document.GetPage(1));
-        string? currency = null;
+        string? accountCurrency = null;
         decimal? previousBalance = null;
         decimal? statementBalance = null;
         List<Transaction> transactions = [];
@@ -47,12 +49,13 @@ public static partial class HsbcStatementReader
         {
             var lines = GroupIntoLines(page.GetWords());
             var headerIndex = lines.FindIndex(IsTableHeader);
+            
             if (headerIndex < 0)
             {
                 continue;
             }
 
-            currency ??= ReadCurrency(lines[headerIndex]);
+            accountCurrency ??= ReadAccountCurrency(lines[headerIndex]);
 
             foreach (var line in lines.Skip(headerIndex + 1))
             {
@@ -69,7 +72,7 @@ public static partial class HsbcStatementReader
                 }
                 else if (IsTransaction(line, amountText))
                 {
-                    transactions.Add(ReadTransaction(line, amountText, description, currency!, statementDate));
+                    transactions.Add(ReadTransaction(line, amountText, description, accountCurrency!, statementDate));
                 }
             }
         }
@@ -106,7 +109,7 @@ public static partial class HsbcStatementReader
         line.Words.Count > 1 && line.Words[0].Text == "Post" && line.Words.Any(w => w.Text == "Amount");
 
     // The header reads "Amount (HKD)", which is the billing currency for every row.
-    private static string ReadCurrency(Line header)
+    private static string ReadAccountCurrency(Line header)
     {
         var words = header.Words.Select(w => w.Text).ToList();
         var index = words.IndexOf("Amount");
@@ -156,7 +159,7 @@ public static partial class HsbcStatementReader
         && amountText.Length > 0;
 
     private static Transaction ReadTransaction(
-        Line line, string amountText, string description, string currency, DateOnly statementDate)
+        Line line, string amountText, string description, string accountCurrency, DateOnly statementDate)
     {
         var isCredit = amountText.EndsWith("CR", StringComparison.Ordinal);
         var location = line.Text(LocationX, CountryX);
@@ -169,7 +172,7 @@ public static partial class HsbcStatementReader
         {
             PostDate = ParseDayMonth(line.Words[0].Text, statementDate),
             TransactionDate = ParseDayMonth(line.Words[1].Text, statementDate),
-            Currency = currency,
+            Currency = accountCurrency,
             Amount = ParseAmount(amountText),
             Description = description,
             Merchant = hasMerchantColumns ? line.Text(MerchantX, LocationX) : description,

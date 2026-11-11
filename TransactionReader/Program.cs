@@ -1,5 +1,4 @@
 using TransactionReader.Data;
-using TransactionReader.Readers;
 
 if (args.Length == 0)
 {
@@ -18,7 +17,7 @@ if (!File.Exists(filePath))
 var transactions = Path.GetExtension(filePath).ToLowerInvariant() switch
 {
     ".csv" => TransactionReader.Readers.CsvHelper.ReadFile(filePath),
-    ".pdf" => HsbcStatementReader.ReadFile(filePath),
+    ".pdf" => TransactionReader.Readers.HsbcStatementReader.ReadFile(filePath),
     _ => null,
 };
 
