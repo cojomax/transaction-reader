@@ -1,4 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
 using TransactionReader;
+using TransactionReader.Data;
 
 using var host = AppHost.CreateBuilder(args).Build();
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TransactionReader.Data;
+using TransactionReader.Finverse;
 
 namespace TransactionReader;
 
@@ -30,6 +31,11 @@ public static class AppHost
 
         builder.Services.AddDbContext<TransactionDbContext>(options =>
             ConfigureDbContext(options, builder.Configuration));
+
+        builder.Services.AddOptions<FinverseOptions>()
+            .BindConfiguration(FinverseOptions.SectionName)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         return builder;
     }
