@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using TransactionReader.Data;
 using TransactionReader.Finverse;
 
@@ -13,7 +14,6 @@ namespace TransactionReader;
 /// </summary>
 public static class AppHost
 {
-    // QUESTION: what calls this and what args are provided?
     public static HostApplicationBuilder CreateBuilder(string[] args)
     {
         var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
@@ -36,6 +36,15 @@ public static class AppHost
             .BindConfiguration(FinverseOptions.SectionName)
             .ValidateDataAnnotations()
             .ValidateOnStart();
+
+        builder.Services.AddSingleton(TimeProvider.System);
+        builder.Services.AddSingleton<FinverseTokenCache>();
+        
+        builder.Services.AddHttpClient<FinverseClient>((services, http) =>
+        {
+            var finverse = services.GetRequiredService<IOptions<FinverseOptions>>().Value;
+            http.BaseAddress = finverse.BaseUrl;
+        });
 
         return builder;
     }
