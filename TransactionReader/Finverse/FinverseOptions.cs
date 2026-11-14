@@ -19,4 +19,7 @@ public class FinverseOptions
 
     [Required]
     public Uri? BaseUrl { get; set; }
+    
+    [Required]
+    public string RedirectUri { get; set; } = string.Empty;
 }
